@@ -1,0 +1,13 @@
+Debug/
+Release/
+enc_temp_folder/
+ipch/
+old/
+private/
+*.exe
+*.obj
+*.old
+*.opensdf
+*.sdf
+*.suo
+*.user

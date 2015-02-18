@@ -79,6 +79,16 @@ void CarListShow(struct car_list *list) {
     }
 }
 
+void CarNodeFree(struct car_node *node) {
+    if(!node) {
+        return;
+    }
+    UNLINK_NODE(node);
+    free(node->name);
+    free(node);
+    return;
+}
+
 void CarListFree(struct car_list *list) {
     struct car_node *node = NULL;
     if(!list) {
@@ -86,9 +96,7 @@ void CarListFree(struct car_list *list) {
     }
     for(node = list->head; node; ) {
         struct car_node *temp = node->next;
-        UNLINK_NODE(node);
-        free(node->name);
-        free(node);
+        CarNodeFree(node);
         node = temp;
     }
     free(list);

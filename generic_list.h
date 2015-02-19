@@ -128,9 +128,9 @@ generic function-like macro. The parameters must not have side effects.
 MS_INLINE_PRAGMA(warning(push)) \
 MS_INLINE_PRAGMA(warning(disable:4127)) \
 do { \
-    if(node) { \
-        node->parent = NULL; \
-        node->prev = node->next = NULL; \
+    if((node)) { \
+        (node)->parent = NULL; \
+        (node)->prev = (node)->next = NULL; \
     } \
 } while(0) \
 MS_INLINE_PRAGMA(warning(pop))
@@ -149,9 +149,9 @@ generic function-like macro. The parameters must not have side effects.
 MS_INLINE_PRAGMA(warning(push)) \
 MS_INLINE_PRAGMA(warning(disable:4127)) \
 do { \
-    if(list) { \
-        list->count = 0; \
-        list->head = list->tail = NULL; \
+    if((list)) { \
+        (list)->count = 0; \
+        (list)->head = (list)->tail = NULL; \
     } \
 } while(0) \
 MS_INLINE_PRAGMA(warning(pop))
@@ -169,24 +169,24 @@ generic function-like macro. The parameters must not have side effects.
 MS_INLINE_PRAGMA(warning(push)) \
 MS_INLINE_PRAGMA(warning(disable:4127)) \
 do { \
-    if(node) { \
-        if(node->parent) { \
-            if(node->parent->head == node) { \
-                node->parent->head = node->next; \
+    if((node)) { \
+        if((node)->parent) { \
+            if((node)->parent->head == (node)) { \
+                (node)->parent->head = (node)->next; \
             } \
-            if(node->parent->tail == node) { \
-                node->parent->tail = node->prev; \
+            if((node)->parent->tail == (node)) { \
+                (node)->parent->tail = (node)->prev; \
             } \
-            --node->parent->count; \
-            node->parent = NULL; \
+            --(node)->parent->count; \
+            (node)->parent = NULL; \
         } \
-        if(node->prev) { \
-            node->prev->next = node->next; \
+        if((node)->prev) { \
+            (node)->prev->next = (node)->next; \
         } \
-        if(node->next) { \
-            node->next->prev = node->prev; \
+        if((node)->next) { \
+            (node)->next->prev = (node)->prev; \
         } \
-        node->prev = node->next = NULL; \
+        (node)->prev = (node)->next = NULL; \
     } \
 } while(0) \
 MS_INLINE_PRAGMA(warning(pop))
@@ -211,20 +211,21 @@ generic function-like macro. The parameters must not have side effects.
 MS_INLINE_PRAGMA(warning(push)) \
 MS_INLINE_PRAGMA(warning(disable:4127)) \
 do { \
-    if(node && list && (node != list->head) && (list->count != (size_t)-1)) \
+    if((node) && (list) && ((node) != (list)->head) \
+        && ((list)->count != (size_t)-1)) \
     { \
-        UNLINK_NODE(node); \
-        node->next = list->head; \
-        node->prev = NULL; \
-        if(!list->tail) { \
-            list->tail = node; \
+        UNLINK_NODE((node)); \
+        (node)->next = (list)->head; \
+        (node)->prev = NULL; \
+        if(!(list)->tail) { \
+            (list)->tail = (node); \
         } \
-        if(list->head) { \
-            list->head->prev = node; \
+        if((list)->head) { \
+            (list)->head->prev = (node); \
         } \
-        list->head = node; \
-        ++list->count; \
-        node->parent = list; \
+        (list)->head = (node); \
+        ++(list)->count; \
+        (node)->parent = (list); \
     } \
 } while(0) \
 MS_INLINE_PRAGMA(warning(pop))
@@ -249,20 +250,21 @@ generic function-like macro. The parameters must not have side effects.
 MS_INLINE_PRAGMA(warning(push)) \
 MS_INLINE_PRAGMA(warning(disable:4127)) \
 do { \
-    if(node && list && (node != list->tail) && (list->count != (size_t)-1)) \
+    if((node) && (list) && ((node) != (list)->tail) \
+        && ((list)->count != (size_t)-1)) \
     { \
-        UNLINK_NODE(node); \
-        node->next = NULL; \
-        node->prev = list->tail; \
-        if(!list->head) { \
-            list->head = node; \
+        UNLINK_NODE((node)); \
+        (node)->next = NULL; \
+        (node)->prev = (list)->tail; \
+        if(!(list)->head) { \
+            (list)->head = (node); \
         } \
-        if(list->tail) { \
-            list->tail->next = node; \
+        if((list)->tail) { \
+            (list)->tail->next = (node); \
         } \
-        list->tail = node; \
-        ++list->count; \
-        node->parent = list; \
+        (list)->tail = (node); \
+        ++(list)->count; \
+        (node)->parent = (list); \
     } \
 } while(0) \
 MS_INLINE_PRAGMA(warning(pop))
@@ -291,23 +293,23 @@ generic function-like macro. The parameters must not have side effects.
 MS_INLINE_PRAGMA(warning(push)) \
 MS_INLINE_PRAGMA(warning(disable:4127)) \
 do { \
-    if(node && position_node && (node != position_node) \
-        && (!node->parent || (node->parent->count != (size_t)-1))) \
+    if((node) && (position_node) && ((node) != (position_node)) \
+        && (!(node)->parent || ((node)->parent->count != (size_t)-1))) \
     { \
-        UNLINK_NODE(node); \
-        node->next = position_node; \
-        node->prev = position_node->prev; \
-        if(position_node->prev) { \
-            position_node->prev->next = node; \
+        UNLINK_NODE((node)); \
+        (node)->next = (position_node); \
+        (node)->prev = (position_node)->prev; \
+        if((position_node)->prev) { \
+            (position_node)->prev->next = (node); \
         } \
-        position_node->prev = node; \
-        if(position_node->parent) { \
-            if(position_node->parent->head == position_node) { \
-                position_node->parent->head = node; \
+        (position_node)->prev = (node); \
+        if((position_node)->parent) { \
+            if((position_node)->parent->head == (position_node)) { \
+                (position_node)->parent->head = (node); \
             } \
-            ++position_node->parent->count; \
+            ++(position_node)->parent->count; \
         } \
-        node->parent = position_node->parent; \
+        (node)->parent = (position_node)->parent; \
     } \
 } while(0) \
 MS_INLINE_PRAGMA(warning(pop))
@@ -336,23 +338,23 @@ generic function-like macro. The parameters must not have side effects.
 MS_INLINE_PRAGMA(warning(push)) \
 MS_INLINE_PRAGMA(warning(disable:4127)) \
 do { \
-    if(node && position_node && (node != position_node) \
-        && (!node->parent || (node->parent->count != (size_t)-1))) \
+    if((node) && (position_node) && ((node) != (position_node)) \
+        && (!(node)->parent || ((node)->parent->count != (size_t)-1))) \
     { \
-        UNLINK_NODE(node); \
-        node->next = position_node->next; \
-        node->prev = position_node; \
-        if(position_node->next) { \
-            position_node->next->prev = node; \
+        UNLINK_NODE((node)); \
+        (node)->next = (position_node)->next; \
+        (node)->prev = (position_node); \
+        if((position_node)->next) { \
+            (position_node)->next->prev = (node); \
         } \
-        position_node->next = node; \
-        if(position_node->parent) { \
-            if(position_node->parent->tail == position_node) { \
-                position_node->parent->tail = node; \
+        (position_node)->next = (node); \
+        if((position_node)->parent) { \
+            if((position_node)->parent->tail == (position_node)) { \
+                (position_node)->parent->tail = (node); \
             } \
-            ++position_node->parent->count; \
+            ++(position_node)->parent->count; \
         } \
-        node->parent = position_node->parent; \
+        (node)->parent = (position_node)->parent; \
     } \
 } while(0) \
 MS_INLINE_PRAGMA(warning(pop))

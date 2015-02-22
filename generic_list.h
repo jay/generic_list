@@ -60,9 +60,26 @@ LINK_NODE_AFTER
 Link a node to a list and position it after another node already in the list.
 
 ---
+Important:
 
 The input parameters for the macros are evaluated multiple times because they
-are generic function-like macros. The parameters must not have side effects.
+are generic function-like macros. The parameters must not have side effects or
+access the list.
+
+WRONG: UNLINK_NODE(node->next);
+The list is accessed. When a node is linked/unlinked next/prev/parent may be
+changed for other nodes and head/tail/count may be changed for the list.
+node->next is evaluated multiple times and may not have the same value at a
+later statement in the macro.
+RIGHT: nodetype *temp = node->next; UNLINK_NODE(temp);
+
+WRONG: UNLINK_NODE(Function());
+Function() will be called multiple times in the macro. Also it may access the
+list or have some side effect.
+RIGHT: nodetype *temp = Function(); UNLINK_NODE(temp);
+
+---
+Other:
 
 For whichever is defined last --your node or your list-- a forward declaration
 for it must come before both.
@@ -120,7 +137,9 @@ count : The number of nodes in the list. 0 if none.
 Zero out the node members (prev, next, parent).
 
 The input parameters below are evaluated multiple times because this is a
-generic function-like macro. The parameters must not have side effects.
+generic function-like macro. The parameters must not have side effects or
+access the list. For more info refer to the 'Important' section below the
+license comment block at the beginning of this header file.
 
 [in] 'node' : Pointer to a node.
 */
@@ -141,7 +160,9 @@ MS_INLINE_PRAGMA(warning(pop))
 Zero out the list members (head, tail, count).
 
 The input parameters below are evaluated multiple times because this is a
-generic function-like macro. The parameters must not have side effects.
+generic function-like macro. The parameters must not have side effects or
+access the list. For more info refer to the 'Important' section below the
+license comment block at the beginning of this header file.
 
 [in] 'list' : Pointer to a list.
 */
@@ -161,7 +182,9 @@ MS_INLINE_PRAGMA(warning(pop))
 Unlink a node from its list.
 
 The input parameters below are evaluated multiple times because this is a
-generic function-like macro. The parameters must not have side effects.
+generic function-like macro. The parameters must not have side effects or
+access the list. For more info refer to the 'Important' section below the
+license comment block at the beginning of this header file.
 
 [in] 'node' : Pointer to a node.
 */
@@ -202,7 +225,9 @@ If 'list' has a node count equal to the maximum value of size_t then no action
 is taken. If 'node' is already part of a list it is not unlinked.
 
 The input parameters below are evaluated multiple times because this is a
-generic function-like macro. The parameters must not have side effects.
+generic function-like macro. The parameters must not have side effects or
+access the list. For more info refer to the 'Important' section below the
+license comment block at the beginning of this header file.
 
 [in] 'node' : Pointer to a node.
 [in] 'list' : Pointer to a list.
@@ -241,7 +266,9 @@ If 'list' has a node count equal to the maximum value of size_t then no action
 is taken. If 'node' is already part of a list it is not unlinked.
 
 The input parameters below are evaluated multiple times because this is a
-generic function-like macro. The parameters must not have side effects.
+generic function-like macro. The parameters must not have side effects or
+access the list. For more info refer to the 'Important' section below the
+license comment block at the beginning of this header file.
 
 [in] 'node' : Pointer to a node.
 [in] 'list' : Pointer to a list.
@@ -284,7 +311,9 @@ value of size_t then no action is taken. If 'node' is already part of a list it
 is not unlinked.
 
 The input parameters below are evaluated multiple times because this is a
-generic function-like macro. The parameters must not have side effects.
+generic function-like macro. The parameters must not have side effects or
+access the list. For more info refer to the 'Important' section below the
+license comment block at the beginning of this header file.
 
 [in] 'node' : Pointer to a node.
 [in] 'position_node' : Pointer to a node that's part of a list.
@@ -329,7 +358,9 @@ value of size_t then no action is taken. If 'node' is already part of a list it
 is not unlinked.
 
 The input parameters below are evaluated multiple times because this is a
-generic function-like macro. The parameters must not have side effects.
+generic function-like macro. The parameters must not have side effects or
+access the list. For more info refer to the 'Important' section below the
+license comment block at the beginning of this header file.
 
 [in] 'node' : Pointer to a node.
 [in] 'position_node' : Pointer to a node that's part of a list.

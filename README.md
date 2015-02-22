@@ -56,6 +56,19 @@ Link a node to a list and position it before another node already in the list.
 #### LINK_NODE_AFTER
 Link a node to a list and position it after another node already in the list.
 
+Important
+---------
+
+The input parameters for the macros are evaluated multiple times because they are generic function-like macros. The parameters must not have side effects or access the list.
+
+***WRONG:*** `UNLINK_NODE(node->next);`  
+The list is accessed. When a node is linked/unlinked `next`/`prev`/`parent` may be changed for other nodes and `head`/`tail`/`count` may be changed for the list. `node->next` is evaluated multiple times and may not have the same value at a later statement in the macro.  
+***RIGHT:*** `nodetype *temp = node->next; UNLINK_NODE(temp);`
+
+***WRONG:*** `UNLINK_NODE(Function());`  
+Function() will be called multiple times in the macro. Also it may access the list or have some side effect.  
+***RIGHT:*** `nodetype *temp = Function(); UNLINK_NODE(temp);`
+
 Documentation
 -------------
 

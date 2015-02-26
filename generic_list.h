@@ -90,6 +90,7 @@ members before using by calling ZERO_OUT_NODE_MEMBERS/ZERO_OUT_LIST_MEMBERS.
 For an example refer to example.c
 */
 
+#include <stddef.h>
 
 #ifndef MS_INLINE_PRAGMA
 #if (_MSC_VER >= 1300)
